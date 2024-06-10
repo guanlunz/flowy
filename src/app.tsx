@@ -1,9 +1,22 @@
 import { createRoot } from "react-dom/client";
 import Main from "./components/main";
+import { reducer } from "./state/spreadsheet-state";
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
+
+const store = configureStore({
+  preloadedState: {
+    spreadsheetData: [
+      [{ value: "Vanilla" }, { value: "Chocolate" }],
+      [{ value: "Strawberry" }, { value: "Cookies" }],
+    ],
+  },
+  reducer,
+});
 
 const root = createRoot(document.body);
 root.render(
-  <div>
+  <Provider store={store}>
     <Main />
-  </div>
+  </Provider>
 );

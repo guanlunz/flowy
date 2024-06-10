@@ -1,31 +1,26 @@
 import { Spreadsheet } from "react-spreadsheet";
 import SmartInput from "./smart-input";
-import { configureStore } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
-
-const store = configureStore({
-  preloadedState: {
-    spreadsheetData: [
-      [{ value: "Vanilla" }, { value: "Chocolate" }],
-      [{ value: "Strawberry" }, { value: "Cookies" }],
-    ],
-  },
-  reducer: () => {},
-});
+import { useSelector } from "react-redux";
+import { SpreadsheetState } from "../state/spreadsheet-state";
 
 export default function Main() {
   const [shouldShowSmartInput, setShouldShowSmartInput] = useState(false);
   useEffect(() => {
+    // shortcut to open the smart input
     document.addEventListener("keydown", (event: KeyboardEvent) => {
       if (event.key === "l" && event.metaKey) {
         setShouldShowSmartInput(true);
       }
     });
   }, []);
+
+  const data = useSelector((state: SpreadsheetState) => state.spreadsheetData);
+
   return (
     <div>
       {shouldShowSmartInput ? <SmartInput /> : undefined}
-      <Spreadsheet data={[]} />
+      <Spreadsheet data={data} />
     </div>
   );
 }

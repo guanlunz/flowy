@@ -1,26 +1,49 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-
-const OPTIONS = ["Transform", "Plot"];
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import SmartInputResultItem from "./smart-input-result-item";
+import { useDispatch } from "react-redux";
+import {
+  SpreadSheetAction,
+  SpreadSheetActions,
+} from "../store/spreadsheet-actions";
 
 function getMatchedOptions(inputValue: string) {
   if (inputValue === "") {
     return [];
   }
 
-  return OPTIONS.filter(
-    (option) => option.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
+  return SpreadSheetActions.filter(
+    (action) =>
+      action.type.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
   );
 }
 
 export default function SmartInput() {
   const smartInput = useRef(null);
-  const [results, setResults] = useState([]);
-  const resultElements = results.map((result) => (
-    <li key={result}>{result}</li>
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const [results, setResults] = useState<SpreadSheetAction[]>([]);
+  const resultElements = results.map((result, index) => (
+    <SmartInputResultItem
+      result={result.type}
+      isHighlighed={index === currentIndex}
+    />
   ));
+
+  const dispatch = useDispatch();
 
   function handleOnChange(evt: ChangeEvent<HTMLInputElement>) {
     setResults(getMatchedOptions(evt.target.value));
+  }
+
+  function handleKeyDown(evt: KeyboardEvent<HTMLInputElement>) {
+    if (evt.code === "Enter") {
+      dispatch(results[currentIndex]);
+    } else if (evt.code === "ArrowDown") {
+      setCurrentIndex((currentIndex + 1) % results.length);
+    } else if (evt.code === "ArrowUp") {
+      setCurrentIndex((currentIndex - 1 + results.length) % results.length);
+    }
   }
 
   useEffect(() => {
@@ -29,7 +52,12 @@ export default function SmartInput() {
 
   return (
     <div>
-      <input type="text" ref={smartInput} onChange={handleOnChange} />
+      <input
+        type="text"
+        ref={smartInput}
+        onChange={handleOnChange}
+        onKeyDown={handleKeyDown}
+      />
       <div className="smart-input__dropdown">
         <ul>{resultElements}</ul>
       </div>
