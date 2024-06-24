@@ -1,3 +1,6 @@
+import classNames from "classnames";
+import "./smart-input.css";
+
 export default function SmartInputResultItem({
   result,
   isHighlighed,
@@ -6,9 +9,14 @@ export default function SmartInputResultItem({
   isHighlighed: boolean;
 }) {
   return (
-    <li key={result}>
+    <li
+      key={result}
+      className={classNames({
+        "smart-input-result-item": true,
+        "smart-input-result-item--highlighted": isHighlighed,
+      })}
+    >
       <div>{result}</div>
-      <div>{isHighlighed ? "*" : undefined}</div>
     </li>
   );
 }
