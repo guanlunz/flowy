@@ -1,8 +1,11 @@
 export type SpreadSheetAction = {
-  type: string;
+  type: "OPEN_FILE" | "PLOT" | "TRANSFORM" | "UNDO" | "REDO";
 };
 
 export const SpreadSheetActions: SpreadSheetAction[] = [
+  {
+    type: "OPEN_FILE",
+  },
   {
     type: "PLOT",
   },

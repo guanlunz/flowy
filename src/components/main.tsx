@@ -9,7 +9,7 @@ export default function Main() {
   useEffect(() => {
     // shortcut to open the smart input
     document.addEventListener("keydown", (event: KeyboardEvent) => {
-      if (event.key === "l" && event.metaKey) {
+      if (event.key === "p" && event.metaKey) {
         setShouldShowSmartInput(true);
       }
     });

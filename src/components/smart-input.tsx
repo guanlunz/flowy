@@ -26,6 +26,7 @@ export default function SmartInput() {
   const resultElements = results.map((result, index) => (
     <SmartInputResultItem
       result={result.type}
+      key={result.type}
       isHighlighed={index === currentIndex}
     />
   ));

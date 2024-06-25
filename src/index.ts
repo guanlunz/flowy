@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import reloader from "electron-reloader";
 try {
   reloader(module);
@@ -29,6 +29,10 @@ const createWindow = (): void => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
+  ipcMain.on("open-file", () => {
+    dialog.showOpenDialog({ properties: ["openFile"] });
+  });
 };
 
 // This method will be called when Electron has finished

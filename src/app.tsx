@@ -3,6 +3,13 @@ import Main from "./components/main";
 import { reducer } from "./state/spreadsheet-state";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
+import electronApi from "./api/electron-api";
+
+declare global {
+  interface Window {
+    electronAPI: typeof electronApi;
+  }
+}
 
 const store = configureStore({
   preloadedState: {
