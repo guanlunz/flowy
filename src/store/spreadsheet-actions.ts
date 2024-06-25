@@ -1,3 +1,4 @@
+// TODO: better define the action types
 export type SpreadSheetAction = {
   type: "OPEN_FILE" | "PLOT" | "TRANSFORM" | "UNDO" | "REDO";
 };

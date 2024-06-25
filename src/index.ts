@@ -1,5 +1,6 @@
 import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import reloader from "electron-reloader";
+import { loadFile } from "./main/file-loader";
 try {
   reloader(module);
 } catch {}
@@ -31,7 +32,14 @@ const createWindow = (): void => {
   mainWindow.webContents.openDevTools();
 
   ipcMain.on("open-file", () => {
-    dialog.showOpenDialog({ properties: ["openFile"] });
+    dialog
+      .showOpenDialog({ properties: ["openFile"] })
+      .then(({ filePaths: [filePath] }) => {
+        const excelFileContent = loadFile(filePath);
+        if (excelFileContent) {
+          mainWindow.webContents.send("excel-file-loaded", excelFileContent);
+        }
+      });
   });
 };
 
