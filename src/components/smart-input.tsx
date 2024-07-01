@@ -17,7 +17,11 @@ function getMatchedOptions(inputValue: string) {
   );
 }
 
-export default function SmartInput() {
+interface SmartInputProps {
+  plotGraph: () => void;
+}
+
+export default function SmartInput({ plotGraph }: SmartInputProps) {
   const smartInput = useRef(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -39,6 +43,13 @@ export default function SmartInput() {
 
   function handleKeyDown(evt: KeyboardEvent<HTMLInputElement>) {
     if (evt.code === "Enter") {
+      const action = results[currentIndex];
+      switch (action.type) {
+        case "PLOT":
+          plotGraph();
+          break;
+      }
+
       dispatch(results[currentIndex]);
     } else if (evt.code === "ArrowDown") {
       setCurrentIndex((currentIndex + 1) % results.length);

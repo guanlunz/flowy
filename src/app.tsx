@@ -13,10 +13,7 @@ declare global {
 
 const store = configureStore({
   preloadedState: {
-    spreadsheetData: [
-      [{ value: "Vanilla" }, { value: "Chocolate" }],
-      [{ value: "Strawberry" }, { value: "Cookies" }],
-    ],
+    spreadsheetData: [],
   },
   reducer,
 });

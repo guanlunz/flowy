@@ -10,4 +10,9 @@ export default {
       callback(value);
     });
   },
+
+  // for testing
+  openSampleExcel: () => {
+    ipcRenderer.send("open-sample-excel");
+  },
 };

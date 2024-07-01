@@ -21,6 +21,10 @@ const reducer = (
       window.electronAPI.openFile();
       break;
 
+    case "OPEN_SAMPLE_EXCEL":
+      window.electronAPI.openSampleExcel();
+      break;
+
     case "LOAD_EXCEL_FILE_DATA":
       return {
         ...state,

@@ -41,6 +41,16 @@ const createWindow = (): void => {
         }
       });
   });
+
+  ipcMain.on("open-sample-excel", () => {
+    const excelFileContent = loadFile(
+      "/Users/glzhao/Desktop/analysis_MFI_table.xlsx"
+    );
+    console.log(excelFileContent);
+    if (excelFileContent) {
+      mainWindow.webContents.send("excel-file-loaded", excelFileContent);
+    }
+  });
 };
 
 // This method will be called when Electron has finished
