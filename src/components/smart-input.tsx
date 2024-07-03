@@ -18,10 +18,26 @@ function getMatchedOptions(inputValue: string) {
 }
 
 interface SmartInputProps {
+  dismissInput: () => void;
   plotGraph: () => void;
 }
 
-export default function SmartInput({ plotGraph }: SmartInputProps) {
+export default function SmartInput({
+  dismissInput,
+  plotGraph,
+}: SmartInputProps) {
+  function selectSmartInputOption(action: SpreadSheetAction) {
+    switch (action.type) {
+      case "PLOT":
+        plotGraph();
+        break;
+    }
+
+    dismissInput();
+
+    dispatch(action);
+  }
+
   const smartInput = useRef(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -29,9 +45,10 @@ export default function SmartInput({ plotGraph }: SmartInputProps) {
   const [results, setResults] = useState<SpreadSheetAction[]>([]);
   const resultElements = results.map((result, index) => (
     <SmartInputResultItem
-      result={result.type}
+      result={result}
       key={result.type}
       isHighlighed={index === currentIndex}
+      onSelect={selectSmartInputOption}
     />
   ));
 
@@ -44,34 +61,32 @@ export default function SmartInput({ plotGraph }: SmartInputProps) {
   function handleKeyDown(evt: KeyboardEvent<HTMLInputElement>) {
     if (evt.code === "Enter") {
       const action = results[currentIndex];
-      switch (action.type) {
-        case "PLOT":
-          plotGraph();
-          break;
-      }
-
-      dispatch(results[currentIndex]);
+      selectSmartInputOption(action);
     } else if (evt.code === "ArrowDown") {
       setCurrentIndex((currentIndex + 1) % results.length);
     } else if (evt.code === "ArrowUp") {
       setCurrentIndex((currentIndex - 1 + results.length) % results.length);
+    } else if (evt.code === "Escape") {
+      dismissInput();
     }
   }
 
+  // focus on the input once it's initialized
   useEffect(() => {
     smartInput.current.focus();
   }, []);
 
   return (
-    <div>
+    <div className="smart-input__container" onKeyDown={handleKeyDown}>
       <input
         type="text"
+        className="smart-input__text-field"
+        placeholder="Enter an action, e.g. plot graph"
         ref={smartInput}
         onChange={handleOnChange}
-        onKeyDown={handleKeyDown}
       />
       <div className="smart-input__dropdown">
-        <ul>{resultElements}</ul>
+        <ul className="smart-input__result-list">{resultElements}</ul>
       </div>
     </div>
   );

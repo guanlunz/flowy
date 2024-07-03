@@ -1,3 +1,35 @@
-.smart-input-result-item--highlighted {
-  background-color: aquamarine;
+.smart-input__container {
+  position: fixed;
+  z-index: 1000;
+  width: 480px;
+  max-height: 600px;
+  top: calc(50% - 240px);
+  left: calc(50% - 300px);
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 4px #ccc;
+}
+
+.smart-input__text-field {
+  width: calc(100% - 16px * 2 - 4px * 2);
+  font-size: 24px;
+  margin: 8px 16px;
+  padding: 4px;
+  border: none;
+  outline: none;
+}
+
+.smart-input__result-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.smart-input-result-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  &:hover,
+  &.smart-input-result-item--highlighted {
+    background-color: #eee;
+  }
 }
