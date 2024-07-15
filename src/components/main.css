@@ -1,5 +1,17 @@
 html,
 body {
+  margin: 0;
+  padding: 0;
   font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
     Arial, sans-serif;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+}
+
+.horizontal-panel {
+  overflow-x: scroll;
+  flex: 1 1 0px;
 }

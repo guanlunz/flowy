@@ -6,9 +6,10 @@ import { useSelector } from "react-redux";
 import { SpreadsheetState } from "../state/spreadsheet-state";
 
 import type { ExcelFile } from "../main/file-loader";
-import ChartModal from "./charts/chart-modal";
+import ChartPanel from "./charts/chart-panel";
 
 import "./main.css";
+import FlowManager from "./flow-manager";
 
 export default function Main() {
   const [shouldShowSmartInput, setShouldShowSmartInput] = useState(false);
@@ -32,18 +33,21 @@ export default function Main() {
   const data = useSelector((state: SpreadsheetState) => state.spreadsheetData);
 
   return (
-    <div>
+    <div className="main">
+      <FlowManager />
       {shouldShowSmartInput ? (
         <SmartInput
           dismissInput={() => setShouldShowSmartInput(false)}
           plotGraph={() => setShouldShowPlottedGraph(true)}
         />
       ) : undefined}
-      <Spreadsheet data={data} />
+      <div className="horizontal-panel">
+        <Spreadsheet data={data} />
+      </div>
       {shouldShowPlottedGraph ? (
-        <ChartModal
+        <ChartPanel
           data={[1, 2, 3, 4, 5]}
-          closeChartModal={() => setShouldShowPlottedGraph(false)}
+          closeChartPanel={() => setShouldShowPlottedGraph(false)}
         />
       ) : undefined}
     </div>
